@@ -3,6 +3,7 @@ import { fetchApi } from "./fetch.js";
 let citys = []
 let temperatures = []
 
+const rgbaYellowColor = 'rgba (255, 255, 0, 1.0)'
 const rgbaBlueColor = 'rgba(0, 0, 255, 0.8)'
 const rgbaRedColor = 'rgba(255, 99, 132, 0.8)'
 const rgbRedColor = 'rgba(255, 99, 132)'
