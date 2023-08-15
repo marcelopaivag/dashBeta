@@ -3,7 +3,13 @@ import { fetchApi } from "./fetch.js";
 let citys = []
 let temperatures = []
 
+const rgbaBlueColor = 'rgba(0, 0, 255, 0.8)'
+const rgbaBlackColor = 'rgba(0, 0, 0, 1.0)'
+const rgbaRedColor = 'rgba(255, 99, 132, 0.8)'
+const rgbRedColor = 'rgba(255, 99, 132)'
 
+const rgbaOrangeColor = 'rgba(255, 159, 64, 0.2)'
+const rgbOrangeColor = 'rgba(255, 159, 64)'
 
 async function renderData() {
 
@@ -11,7 +17,11 @@ async function renderData() {
 
     citys = weathers.map(weather => weather.Estacion)
     temperatures = weathers.map(weather => weather.Temp)
+
+    const backgroundColors = temperatures.map(temperature => temperature < 0 ? rgbaBlueColor : rgbaRedColor) 
     
+    const borderColors = temperatures.map(temperature => temperature > 15 ? rgbRedColor : rgbOrangeColor)
+
     const ctx = document.getElementById('myChart');
 
     new Chart(ctx, {
@@ -19,9 +29,11 @@ async function renderData() {
         data: {
             labels: citys,
             datasets: [{
-                label: 'Temperatura de las Cuidades de Chile Hoy',
+                label: 'Temperatura de Hoy',
                 data: temperatures,
-                borderWidth: 1
+                borderWidth: 1,
+                backgroundColor: backgroundColors,
+                borderColor: borderColors
             }]
         },
         options: {
@@ -30,7 +42,22 @@ async function renderData() {
                     beginAtZero: true
                 }
             }
-        }
+        },
+        tooltip: {
+            callbacks: {
+                label: function(context) {
+                    let label = context.dataset.label || '';
+
+                    if (label) {
+                        label += ': ';
+                    }
+                    if (context.parsed.y !== null) {
+                        label += + context.parsed.y
+                    }
+                    return label;
+                }
+            }
+        }
     });
 }
 renderData()
